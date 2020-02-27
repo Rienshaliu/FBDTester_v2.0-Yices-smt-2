@@ -8,6 +8,7 @@ Among them, Jee et al.'s approach has an advantage of generating tests from FBD 
 This project **FBDTester_v2.0** extends Jee et al.'s work by generating test sequences from FBD programs with internal memory states in a fully automated manner.
 
 # Installation
+This project was developed using Eclipse IDE, and build and installation also use Eclipse.
 
 # Publications
 * International
