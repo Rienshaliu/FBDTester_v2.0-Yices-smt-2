@@ -9,18 +9,18 @@ This project **FBDTester_v2.0** extends Jee et al.'s work by generating test seq
 
 # Installation & Usage
 * Installation
- * This project was developed using Eclipse IDE, and build and installation also use Eclipse.
+  * This project was developed using Eclipse IDE, and build and installation also use Eclipse.
   1. Copy the web URL
   2. Clone a Git repository in Eclipse with the copied web URL
   3. Run the project FBDTesting - FBDTester class not MainWindow - kr.ac.kaist.pSET2XML_Translation
 * Usage
- ![example](./image/example.png)
+  ![example](./image/example.png)
   1. Open an example XML file
   2. Open an example test file
   3. Select test Coverage Criteria among BC, ICC, CCC
   4. Click SMT-based Test Generation
- ** The detailed meaning of test file, BC, ICC, and CCC is explained in the below publications.
- ** Random Test Generaation and SMT-based automation buttons are for the experimentation of the below publications.
+  * The detailed meaning of test file, BC, ICC, and CCC is explained in the below publications.
+  * Random Test Generaation and SMT-based automation buttons are for the experimentation of the below publications.
 # Publications
 * International
   * Song, Jiyoung, Eunkyoung Jee, and Doo-Hwan Bae. "FBDTester 2.0: Automated test sequence generation for FBD programs with internal memory states." Science of Computer Programming 163 (2018): 115-137.
