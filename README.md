@@ -7,9 +7,20 @@ Researchers have recently developed an automated test generation technique aimin
 Among them, Jee et al.'s approach has an advantage of generating tests from FBD programs without requiring any intermediate models. However, test sequence generation for FBD programs with internal memory states was not fully automated in Jee et al's approach. 
 This project **FBDTester_v2.0** extends Jee et al.'s work by generating test sequences from FBD programs with internal memory states in a fully automated manner.
 
-# Installation
-This project was developed using Eclipse IDE, and build and installation also use Eclipse.
-
+# Installation & Usage
+* Installation
+ This project was developed using Eclipse IDE, and build and installation also use Eclipse.
+ 1. Copy the web URL
+ 2. Clone a Git repository in Eclipse with the copied web URL
+ 3. Run the project FBDTesting - FBDTester class not MainWindow - kr.ac.kaist.pSET2XML_Translation
+* Usage
+ ![example](./image/example.png)
+ 1. open XML file
+ 2. open Test file
+ 3. Select test Coverage Criteria among BC, ICC, CCC
+ 4. Click SMT-based Test Generation
+ 
+ ** Random Test Generaation and SMT-based automation buttons are for the experimentation of below publications.
 # Publications
 * International
   * Song, Jiyoung, Eunkyoung Jee, and Doo-Hwan Bae. "FBDTester 2.0: Automated test sequence generation for FBD programs with internal memory states." Science of Computer Programming 163 (2018): 115-137.
