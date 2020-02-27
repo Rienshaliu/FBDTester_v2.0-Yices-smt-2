@@ -1,0 +1,22 @@
+// test case 파일 형식
+// '//'로 시작되는 line은 주석
+// ### 로 시작되는 line은 reserved phrases
+
+// 이 파일은 OR block 대한 test cases
+
+### scan cycle
+50
+
+### constants
+
+### inputs
+A, B, C, _D
+
+### outputs
+OR
+
+### number of test cases
+1
+
+### test cases
+false	false	false	false

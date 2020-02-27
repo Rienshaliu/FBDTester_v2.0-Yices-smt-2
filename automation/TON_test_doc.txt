@@ -1,0 +1,23 @@
+### scan cycle
+50
+
+### constants
+K_DELAY
+
+### cTypes
+100
+
+### inputs
+PV_OUT, TRIP_LOGIC, TSP
+
+### test cases
+0-30000	false	26805
+
+### outputs
+TRIP_LOGIC, TON_et
+
+### oTypes
+true	0
+
+### number of test cases
+1

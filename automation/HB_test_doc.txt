@@ -1,0 +1,23 @@
+### scan cycle
+50
+
+### constants
+HB_ERR_MAX, HB_MIN, HB_MAX
+
+### cTypes
+3	26705	26855
+
+### inputs
+HB, HB_t0, HB_ERR_CNT 
+
+### test cases
+0	0	0
+
+### outputs
+HB_t0, HB_ERR_CNT, HB_ERR
+
+###oTypes
+0	0	0
+
+### number of test cases
+1

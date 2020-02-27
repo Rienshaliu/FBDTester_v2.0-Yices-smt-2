@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://www.plcopen.org/xml/tc6.xsd"
+xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:xsi=
+"http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation=
+"http://www.plcopen.org/xml/tc6.xsd http://www.plcopen.org/xml/tc6.xsd" >
+  <fileHeader companyName="KAIST_DSLAB" productName="noNameNow" productVersion="1" creationDateTime="2015-9-4T03:02:16" />
+  <contentHeader name="prj" author="bwkim" modificationDateTime="2015-9-4T03:02:16" >
+    <coordinateInfo>
+      <fbd>
+        <scaling x="16" y="16" />
+      </fbd>
+      <ld>
+        <scaling x="16" y="16" />
+      </ld>
+      <sfc>
+        <scaling x="16" y="16" />
+      </sfc>
+    </coordinateInfo>
+  </contentHeader>
+  <types>
+    <dataTypes />
+    <pous>
+      <pou name="Program1____R_TRIG_and_SR" pouType="program"  >
+        <interface>
+          <localVars >
+            <variable name="R_TRIG_Switch"  >
+              <type>
+                <null/>
+              </type>
+            </variable >
+          </localVars>
+          <localVars >
+            <variable name="SR_Manu"  >
+              <type>
+                <null/>
+              </type>
+            </variable >
+          </localVars>
+          <localVars >
+            <variable name="SR_Manual"  >
+              <type>
+                <null/>
+              </type>
+            </variable >
+          </localVars>
+          <inOutVars >
+            <variable name="cmdManual"  >
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE" />
+              </initialValue>
+            </variable >
+          </inOutVars>
+        </interface>
+        <body>
+          <LD>
+            <block localId="2" width="80" height="40" typeName="R_TRIG" instanceName="R_TRIG_Switch" >
+              <position x="560" y="210" />
+              <inputVariables >
+                <variable formalParameter="CLK"  >
+                  <connectionPointIn >
+                    <relPosition x="0" y="60" />
+                    <connection refLocalId="1" >
+                      <position x="560" y="240" />
+                    </connection>
+                  </connectionPointIn >
+                </variable >
+              </inputVariables >
+              <outputVariables >
+                <variable formalParameter="Q"  >
+                  <connectionPointOut >
+                    <relPosition x="640" y="30" />
+                  </connectionPointOut>
+                </variable >
+              </outputVariables >
+              <inOutVariables />
+            </block>
+            <block localId="5" width="80" height="60" typeName="AND2_BOOL" >
+              <position x="960" y="90" />
+              <inputVariables >
+                <variable formalParameter="IN1"  >
+                  <connectionPointIn >
+                    <relPosition x="0" y="60" />
+                    <connection refLocalId="2" formalParameter="Q" >
+                      <position x="960" y="120" />
+                      <position x="880" y="120" />
+                      <position x="800" y="120" />
+                      <position x="800" y="150" />
+                      <position x="800" y="180" />
+                      <position x="800" y="210" />
+                      <position x="800" y="240" />
+                      <position x="720" y="240" />
+                    </connection>
+                  </connectionPointIn >
+                </variable >
+                <variable formalParameter="IN2" negated="true"  >
+                  <connectionPointIn >
+                    <relPosition x="0" y="90" />
+                    <connection refLocalId="3" >
+                      <position x="960" y="150" />
+                    </connection>
+                  </connectionPointIn >
+                </variable >
+              </inputVariables >
+              <outputVariables >
+                <variable formalParameter="OUT"  >
+                  <connectionPointOut >
+                    <relPosition x="1040" y="30" />
+                  </connectionPointOut>
+                </variable >
+              </outputVariables >
+              <inOutVariables />
+            </block>
+            <block localId="6" width="80" height="60" typeName="AND2_BOOL" >
+              <position x="960" y="300" />
+              <inputVariables >
+                <variable formalParameter="IN1"  >
+                  <connectionPointIn >
+                    <relPosition x="0" y="60" />
+                    <connection refLocalId="2" formalParameter="Q" >
+                      <position x="960" y="330" />
+                      <position x="880" y="330" />
+                      <position x="800" y="330" />
+                      <position x="800" y="300" />
+                      <position x="800" y="270" />
+                      <position x="960" y="120" />
+                      <position x="880" y="120" />
+                      <position x="800" y="120" />
+                      <position x="800" y="150" />
+                      <position x="800" y="180" />
+                      <position x="800" y="210" />
+                      <position x="800" y="240" />
+                      <position x="720" y="240" />
+                    </connection>
+                  </connectionPointIn >
+                </variable >
+                <variable formalParameter="IN2"  >
+                  <connectionPointIn >
+                    <relPosition x="0" y="90" />
+                    <connection refLocalId="4" >
+                      <position x="960" y="360" />
+                    </connection>
+                  </connectionPointIn >
+                </variable >
+              </inputVariables >
+              <outputVariables >
+                <variable formalParameter="OUT"  >
+                  <connectionPointOut >
+                    <relPosition x="1040" y="60" />
+                  </connectionPointOut>
+                </variable >
+              </outputVariables >
+              <inOutVariables />
+            </block>
+            <block localId="7" width="80" height="60" typeName="SR" instanceName="SR_Manual" >
+              <position x="1440" y="270" />
+              <inputVariables >
+                <variable formalParameter="S1"  >
+                  <connectionPointIn >
+                    <relPosition x="0" y="60" />
+                    <connection refLocalId="5" formalParameter="OUT" >
+                      <position x="1440" y="300" />
+                      <position x="1360" y="300" />
+                      <position x="1280" y="300" />
+                      <position x="1280" y="270" />
+                      <position x="1280" y="240" />
+                      <position x="1280" y="210" />
+                      <position x="1280" y="180" />
+                      <position x="1280" y="150" />
+                      <position x="1280" y="120" />
+                      <position x="1200" y="120" />
+                      <position x="1120" y="120" />
+                    </connection>
+                  </connectionPointIn >
+                </variable >
+                <variable formalParameter="R"  >
+                  <connectionPointIn >
+                    <relPosition x="0" y="90" />
+                    <connection refLocalId="6" formalParameter="OUT" >
+                      <position x="1440" y="330" />
+                      <position x="1360" y="330" />
+                      <position x="1280" y="330" />
+                      <position x="1200" y="330" />
+                      <position x="1120" y="330" />
+                    </connection>
+                  </connectionPointIn >
+                </variable >
+              </inputVariables >
+              <outputVariables >
+                <variable formalParameter="Q1"  >
+                  <connectionPointOut >
+                    <relPosition x="1520" y="30" />
+                  </connectionPointOut>
+                </variable >
+              </outputVariables >
+              <inOutVariables />
+            </block>
+            <inVariable localId="1" width="80" height="16" >
+              <position x="480" y="240" />
+              <connectionPointOut >
+                <relPosition x="80" y="8" />
+              </connectionPointOut>
+              <expression>
+                gDiSwitchManual
+              </expression>
+            </inVariable>
+            <inVariable localId="3" width="80" height="16" >
+              <position x="880" y="150" />
+              <connectionPointOut >
+                <relPosition x="80" y="8" />
+              </connectionPointOut>
+              <expression>
+                cmdManual
+              </expression>
+            </inVariable>
+            <inVariable localId="4" width="80" height="16" >
+              <position x="880" y="360" />
+              <connectionPointOut >
+                <relPosition x="80" y="8" />
+              </connectionPointOut>
+              <expression>
+                cmdManual
+              </expression>
+            </inVariable>
+            <outVariable localId="8" width="80" height="16" >
+              <position x="1600" y="300" />
+              <connectionPointIn >
+                <relPosition x="0" y="8" />
+                <connection refLocalId="7" formalParameter="Q1" >
+                  <position x="1600" y="300" />
+                </connection>
+              </connectionPointIn >
+              <expression>
+                cmdManual
+              </expression>
+            </outVariable>
+          </LD>
+        </body>
+      </pou>
+    </pous>
+  </types>
+  <instances>
+    <configurations />
+  </instances>
+</project>

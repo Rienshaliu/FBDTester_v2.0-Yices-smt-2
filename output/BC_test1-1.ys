@@ -1,0 +1,50 @@
+;; Environment setting
+(set-evidence! true)
+(set-verbosity! 1)
+;; Rule 1-1. Define constant and variables
+;; constant variables
+(define SCAN_TIME::int 50)
+
+(define A_t2::bool )
+(define B_t2::bool )
+(define C_t2::bool )
+(define _D_t2::bool )
+(define OR4_t2::bool (or (or (or A_t2 B_t2) C_t2) _D_t2))
+
+;; Rule 1-2. Define DPCs for d-paths
+
+;; Rule 2. Assert test requirements
+(define A_t1::bool )
+(define B_t1::bool )
+(define C_t1::bool )
+(define _D_t1::bool )
+(define OR4_t1::bool (or (or (or A_t1 B_t1) C_t1) _D_t1))
+
+(define A::bool )
+(define B::bool )
+(define C::bool )
+(define _D::bool )
+(define OR4::bool (or (or (or A B) C) _D))
+
+
+;; DPCs
+(define C1_5_0::bool (or A (not (or (or B C) _D))))
+(define C2_5_1::bool (or B (not (or (or A C) _D))))
+(define C3_5_2::bool (or C (not (or (or A B) _D))))
+(define C4_5_3::bool (or _D (not (or (or A B) C))))
+
+(define p2_1_0::bool  C1_5_0)
+(define p2_2_0::bool  C2_5_1)
+(define p2_3_0::bool  C3_5_2)
+(define p2_4_0::bool  C4_5_3)
+
+;; Test requirements for BC_
+(assert+ p2_1_0 8)
+(assert+ p2_2_0 8)
+(assert+ p2_3_0 8)
+(assert+ p2_4_0 8)
+
+
+
+;; Rule 3. Execute max-sat
+(max-sat)

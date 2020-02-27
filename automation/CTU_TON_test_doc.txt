@@ -1,0 +1,23 @@
+### scan cycle
+50
+
+### constants
+SETPOINT, PULSE_TIME
+
+### cTypes
+8	100
+
+### inputs
+CTU_UP, FILL_BIN, BIN_EMPTY
+
+### test cases
+true	true	true
+
+### outputs
+CTU_UP, CTU_Q, BIN_LEVEL, TON_et
+
+### oTypes
+true	true	0	0
+
+### number of test cases
+1

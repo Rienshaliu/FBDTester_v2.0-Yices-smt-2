@@ -1,0 +1,13 @@
+Round 1
+========================
+(= A false)
+(= B false)
+(= C false)
+(= _D false)
+*[Not covered on this turn: ]
+========================
+
+STOP : No unsatisfied assertions
+
+
+Total 4 satisfied / 4 assertions : coverage 100.000%

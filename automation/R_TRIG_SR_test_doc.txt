@@ -1,0 +1,23 @@
+### scan cycle
+50
+
+### constants
+
+
+### cTypes
+
+
+### inputs
+cmdManual, gDiSwitchManual
+
+### test cases
+true	true
+
+### outputs
+cmdManual
+
+### oTypes
+true
+
+### number of test cases
+1

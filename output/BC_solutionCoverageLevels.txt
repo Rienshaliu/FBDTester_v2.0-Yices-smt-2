@@ -1,0 +1,3 @@
+Part	No.	Cov.
+1	1	1.000
+Time elapsed: 0.054

@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://www.plcopen.org/xml/tc6.xsd"
+xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:xsi=
+"http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation=
+"http://www.plcopen.org/xml/tc6.xsd http://www.plcopen.org/xml/tc6.xsd" >
+  <fileHeader companyName="KAIST_DSLAB" productName="noNameNow" productVersion="1" creationDateTime="2012-2-3T08:19:06" />
+  <contentHeader name="prj" author="bwkim" modificationDateTime="2012-2-3T08:19:06" >
+    <coordinateInfo>
+      <fbd>
+        <scaling x="16" y="16" />
+      </fbd>
+      <ld>
+        <scaling x="16" y="16" />
+      </ld>
+      <sfc>
+        <scaling x="16" y="16" />
+      </sfc>
+    </coordinateInfo>
+  </contentHeader>
+  <types>
+    <dataTypes />
+    <pous>
+      <pou name="OR" pouType="functionBlock"  >
+        <interface>
+          <inputVars >
+            <variable name="A"  >
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE" />
+              </initialValue>
+            </variable >
+          </inputVars>
+          <inputVars >
+            <variable name="B"  >
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE" />
+              </initialValue>
+            </variable >
+          </inputVars>
+          <inputVars >
+            <variable name="C"  >
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE" />
+              </initialValue>
+            </variable >
+          </inputVars>
+          <inputVars >
+            <variable name="_D"  >
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE" />
+              </initialValue>
+            </variable >
+          </inputVars>
+          <outputVars >
+            <variable name="OR4"  >
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE" />
+              </initialValue>
+            </variable >
+          </outputVars>
+        </interface>
+        <body>
+          <LD>
+            <block localId="5" width="80" height="100" typeName="OR4_BOOL" >
+              <position x="240" y="60" />
+              <inputVariables >
+                <variable formalParameter="IN1"  >
+                  <connectionPointIn >
+                    <relPosition x="0" y="60" />
+                    <connection refLocalId="1" >
+                      <position x="240" y="90" />
+                    </connection>
+                  </connectionPointIn >
+                </variable >
+                <variable formalParameter="IN2"  >
+                  <connectionPointIn >
+                    <relPosition x="0" y="90" />
+                    <connection refLocalId="2" >
+                      <position x="240" y="120" />
+                    </connection>
+                  </connectionPointIn >
+                </variable >
+                <variable formalParameter="IN3"  >
+                  <connectionPointIn >
+                    <relPosition x="0" y="120" />
+                    <connection refLocalId="3" >
+                      <position x="240" y="150" />
+                    </connection>
+                  </connectionPointIn >
+                </variable >
+                <variable formalParameter="IN4"  >
+                  <connectionPointIn >
+                    <relPosition x="0" y="150" />
+                    <connection refLocalId="4" >
+                      <position x="240" y="180" />
+                    </connection>
+                  </connectionPointIn >
+                </variable >
+              </inputVariables >
+              <outputVariables >
+                <variable formalParameter="OUT"  >
+                  <connectionPointOut >
+                    <relPosition x="320" y="30" />
+                  </connectionPointOut>
+                </variable >
+              </outputVariables >
+              <inOutVariables />
+            </block>
+            <inVariable localId="1" width="80" height="16" >
+              <position x="160" y="90" />
+              <connectionPointOut >
+                <relPosition x="80" y="8" />
+              </connectionPointOut>
+              <expression>
+                A
+              </expression>
+            </inVariable>
+            <inVariable localId="2" width="80" height="16" >
+              <position x="160" y="120" />
+              <connectionPointOut >
+                <relPosition x="80" y="8" />
+              </connectionPointOut>
+              <expression>
+                B
+              </expression>
+            </inVariable>
+            <inVariable localId="3" width="80" height="16" >
+              <position x="160" y="150" />
+              <connectionPointOut >
+                <relPosition x="80" y="8" />
+              </connectionPointOut>
+              <expression>
+                C
+              </expression>
+            </inVariable>
+            <inVariable localId="4" width="80" height="16" >
+              <position x="160" y="180" />
+              <connectionPointOut >
+                <relPosition x="80" y="8" />
+              </connectionPointOut>
+              <expression>
+                _D
+              </expression>
+            </inVariable>
+            <outVariable localId="6" width="80" height="16" >
+              <position x="400" y="90" />
+              <connectionPointIn >
+                <relPosition x="0" y="8" />
+                <connection refLocalId="5" formalParameter="OUT" >
+                  <position x="400" y="90" />
+                </connection>
+              </connectionPointIn >
+              <expression>
+                OR4
+              </expression>
+            </outVariable>
+          </LD>
+        </body>
+      </pou>
+    </pous>
+  </types>
+  <instances>
+    <configurations />
+  </instances>
+</project>

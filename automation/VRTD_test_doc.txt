@@ -1,0 +1,23 @@
+### scan cycle
+50
+
+### constants
+K_DELAY
+
+### cTypes
+100
+
+### inputs
+RATE_LMT, PV_OUT, PV2TSP_DIFF, TSP_t19, TRIP, TSP2PTSP_DIFF, PTSP_t19, PTRIP_LOGIC, TRIP_LOGIC, HYS, MDL_E, AI_E, OB_INIT_STA, RNG_MIN, RNG_MAX, RATE_TSP_MAX
+
+### test cases
+2	0-30000	10	26805	true	10	26805	false	false	10	true	true	true	0	30000	30000
+
+### outputs
+PTON_et, TON_et, TSP, PTSP, PTRIP_LOGIC, TRIP_LOGIC, TRIP, PTRIP
+
+### oTypes
+0	0	26805	26805	true	true	false	false
+
+### number of test cases
+1

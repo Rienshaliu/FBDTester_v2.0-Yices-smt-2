@@ -1,0 +1,42 @@
+Project Name : prj
+Project Type : LD
+========INVARS========
+1 A
+2 B
+3 C
+4 _D
+========OUTVARS========
+6 OR4
+========BLOCKS========
+5 OR4_BOOL
+==============CONNECTIONS===================
+1 A <-> 5 OR4_BOOL
+2 B <-> 5 OR4_BOOL
+3 C <-> 5 OR4_BOOL
+4 _D <-> 5 OR4_BOOL
+Block OR4_BOOL : 
+OUT / OR4
+5 OR4_BOOL <-> 6 OR4
+====================================================
+=================LOAD COMPLETE======================
+====================================================
+
+=== Detected input variables ===
+ (1) A
+ (2) B
+ (3) C
+ (4) _D
+=== Detected output variables ===
+ (6) OR4
+========BLOCKS========
+
+
+
+=== Data Paths ===
+===== [D-Paths] for OR4 =====
+p2_1 [0] : <(1)A, (6)OR4>
+p2_2 [1] : <(2)B, (6)OR4>
+p2_3 [2] : <(3)C, (6)OR4>
+p2_4 [3] : <(4)_D, (6)OR4>
+====================
+
