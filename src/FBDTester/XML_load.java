@@ -1060,9 +1060,12 @@ public class XML_load {
 				id++;
 			}
 			//if(isSequenceInput)
+			Connection prevcon = null;
 			for (Connection conn : path.connections) {
-				if (getElementById(conn.start).type != Element.BLOCK)
+				if (getElementById(conn.start).type != Element.BLOCK){
+					prevcon = conn;
 					continue;
+				}
 				IBlock block = getElementById(conn.start).block;
 				String blockname = block.getTypeName();
 				String function_name;
@@ -1074,7 +1077,9 @@ public class XML_load {
 					function_name = blockname.substring(0, blockname.length()-5);
 				else
 					function_name = blockname;
-				DPCLibrary dpclib = findDPCLibraryByName(function_name);
+				// DPCLibrary dpclib = findDPCLibraryByName(function_name);
+				DPCLibrary dpclib = findDPCLibrary(function_name, prevcon.endParam, conn.startParam);
+				
 				if (dpclib == null) {
 					dpclib = findDPCLibraryByName(function_name);
 				}
@@ -1095,23 +1100,23 @@ public class XML_load {
 
 				String function_name_to_add = function_name + conn.start + "_" + conn.startParam.toLowerCase();
 				
-				boolean isSequenceOutput = true;
+				// boolean isSequenceOutput = true;
 				
-				for (Connection c : connections) {
-					if (c.start == conn.start) {
-						Element elem = getElementById(c.end);
-						if (elem.type == Element.OUTVAR) {
+				// for (Connection c : connections) {
+					// if (c.start == conn.start) {
+						Element elem = getElementById(conn.end);
+						if (elem.type == Element.OUTVAR)// {
 							function_name_to_add = elem.outvar.getExpression();
-							for(int i = 0 ; i<inouts.length; i++){
-								if(function_name_to_add.equals(inouts[i])){
-									isSequenceOutput=false;
-									break;
-								}
-							}
-							break;
-						}
-					}
-				}
+							// for(int i = 0 ; i<inouts.length; i++){
+								// if(function_name_to_add.equals(inouts[i])){
+									// isSequenceOutput=false;
+									// break;
+								// }
+							// }
+							// break;
+						// }
+					// }
+				// }
 
 				newTruePath.dpc_str = " (and " + function_name_to_add + " p" + path.dpath_length + "_" + path.dpath_subindex + "_" + path.dPathType + ")";
 				newFalsePath.DPathID = path.DPathID;
@@ -1131,6 +1136,7 @@ public class XML_load {
 				CCC_DPaths.add(newFalsePath);
 //				}
 				id++;
+				prevcon = conn;
 			}
 			if (!isPathAdded) {
 				//				CCC_DPaths.add(path);
