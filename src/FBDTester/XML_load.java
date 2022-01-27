@@ -2668,12 +2668,12 @@ public class XML_load {
 				testSet = new ArrayList<TestCase>();
 				boolean isFirstYicesHeader = true;
 				yicesHeaderList.clear();
-				for(int partNo = 1; partNo <= 1; partNo++) {
+				for(int partNo = 1; partNo <= parameter; partNo++) {
 					int testSetSize = testSet.size(); // 현재 testSet의 크기를 기억했다가 그만큼만 중복을 체크한다. 즉, 새로 만들어지는 newTCs 안에서의 중복은 없다고 가정한다.
 					System.out.println("Test set size: "+testSetSize);
 					
-					ArrayList<TestCase> newTCs = generateTestSuite(pre, dPath.subList(size*(partNo-1)/parameter, size*partNo/parameter), partNo, isFirstYicesHeader);
-					isFirstYicesHeader = false;
+					ArrayList<TestCase> newTCs = generateTestSuite(pre, dPath, dPath.subList(size*(partNo-1)/parameter, size*partNo/parameter), partNo, isFirstYicesHeader);
+					// isFirstYicesHeader = false;
 					for(TestCase newTC: newTCs) {
 						// 중복 제거 (같은 testCase가 이미 testSet에 있으면 추가하지 않는다.)
 						boolean isExist = false;
@@ -2722,7 +2722,7 @@ public class XML_load {
 	 * 
 	 */
 	static ArrayList<String> yicesHeaderList = new ArrayList<String>();
-	private static ArrayList<TestCase> generateTestSuite(String pre, List<DPath> dPaths, int partNo, boolean isFirstYicesHeader) throws IOException { // isFirstYicesHeader 없애기
+	private static ArrayList<TestCase> generateTestSuite(String pre, List<DPath> allDPath, List<DPath> dPaths, int partNo, boolean isFirstYicesHeader) throws IOException { // isFirstYicesHeader 없애기
 		ArrayList<TestCase> testSuite = new ArrayList<TestCase>();
 		ArrayList<DPath> assertions = new ArrayList<DPath>();
 		ArrayList<Integer> unsatYicesIDs = new ArrayList<Integer>();
@@ -2741,6 +2741,7 @@ public class XML_load {
 		// 매 반복시마다 하나의 test case 생성
 		for(int tempIter = 0 ; tempIter < maxIter ; tempIter++){
 			boolean isFirstYices = true, isSatisfiedAll = false;
+			yicesHeaderList.clear();
 			assertID = 0;
 			totalAsserts = 0;
 			assertions.clear();
@@ -2881,6 +2882,8 @@ public class XML_load {
 							}
 						// -------------------------------------------------------- Writing function calculation definitions ends */
 
+						yicesWriter.write(write);
+						yicesHeaderList.add(write);
 						yicesWriter.write("\r\n");
 					}
 					feedbackConnections.clear();
@@ -2898,7 +2901,8 @@ public class XML_load {
 					}
 					yicesWriter.write("\r\n");
 					yicesHeaderList.add("\r\n");
-					for (DPath path : dPaths) {
+					
+					for (DPath path : allDPath) {
 						if (path.dPathType == 0) {
 							yicesWriter.write("(define p" + path.dpath_length + "_" + path.dpath_subindex + "_" + path.dPathType + "::bool " + path.dpc_str + ")\r\n");
 							yicesHeaderList.add("(define p" + path.dpath_length + "_" + path.dpath_subindex + "_" + path.dPathType + "::bool " + path.dpc_str + ")\r\n");
@@ -2911,18 +2915,19 @@ public class XML_load {
 						//console_println("p" + path.dpath_length + "_" + path.dpath_subindex + " [" + path.DPathID + "] : " + path.dpc_str);
 						}
 					}
-					yicesWriter.write("\r\n");
-					yicesWriter.write(";; Test requirements for " + pre + "\r\n");
-					yicesHeaderList.add("\r\n");
-					yicesHeaderList.add(";; Test requirements for " + pre + "\r\n");
-					System.out.println("Rule 2 : " + pre);
+					
 				} else {
 					for(String definition: yicesHeaderList) {
 						yicesWriter.write(definition);
 					}
 					yicesWriter.write("\r\n");
 				}
-
+				
+				yicesWriter.write("\r\n");
+				yicesWriter.write(";; Test requirements for " + pre + "\r\n");
+				//yicesHeaderList.add("\r\n");
+				//yicesHeaderList.add(";; Test requirements for " + pre + "\r\n");
+				System.out.println("Rule 2 : " + pre);
 				/* Writing DPCs and assert+ Starts --------------------------------------------------------------------------------------- */
 				
 				
@@ -2931,7 +2936,7 @@ public class XML_load {
 				if(isFirstYices) {
 					// * First run
 					isFirstYices = false;	
-					for (DPath path : dPaths.subList(size*(partNo-1), size*partNo)){
+					for (DPath path : dPaths/*.subList(size*(partNo-1), size*partNo)*/){
 						assertions.add(path); assertID++;
 						if(path.dPathType == 0)
 							yicesWriter.write("(assert+ p" + path.dpath_length + "_" + path.dpath_subindex + "_" + path.dPathType +" 8)\r\n");
@@ -2954,7 +2959,7 @@ public class XML_load {
 
 					// * assert에 대한 covered 정보를 기록할 수 있도록 초기화
 					totalAsserts = assertID;
-					assert(totalAsserts == dPaths.subList(size*(partNo-1), size*partNo).size());
+					assert(totalAsserts == dPaths/*.subList(size*(partNo-1), size*partNo)*/.size());
 					coveredAsserts = new boolean[totalAsserts+1];
 					for(int i=1; i<=totalAsserts; i++) coveredAsserts[i] = false;
 
@@ -3350,17 +3355,16 @@ public class XML_load {
 					}
 				}
 			
-			yicesWriter.write(write + "\r\n");
-			
-			yicesWriter.write(";; Rule 1-2. Define DPCs for d-paths\r\n\r\n");
+			// yicesWriter.write(";; Rule 1-2. Define DPCs for d-paths\r\n\r\n");
 			//			System.out.println("Rule 1-2");
 			
-			yicesWriter.write(";; Rule 2. Assert test requirements\r\n");
+			// yicesWriter.write(";; Rule 2. Assert test requirements\r\n");
 			
 			}
 			yicesHeaderList.add(write);
-			yicesHeaderList.add(";; Rule 1-2. Define DPCs for d-paths\r\n\r\n");
-			yicesHeaderList.add(";; Rule 2. Assert test requirements\r\n");
+			yicesWriter.write(write + "\r\n");
+			// yicesHeaderList.add(";; Rule 1-2. Define DPCs for d-paths\r\n\r\n");
+			// yicesHeaderList.add(";; Rule 2. Assert test requirements\r\n");
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.err.println("FATAL ERROR: yicesHeader()");
