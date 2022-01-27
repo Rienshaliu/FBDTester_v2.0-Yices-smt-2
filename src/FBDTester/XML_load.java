@@ -700,7 +700,9 @@ public class XML_load {
 	private final static List<IOutVariable> connectedOutputVars = new ArrayList<IOutVariable>();
 	private final static Set<Connection> feedbackConnections = new HashSet<Connection>();
 	public static int setIter=1;
-	private static int maxIter = 1;
+	public static int defaultIter = 1;
+	// unfolding iteration number eg. 4, 5, 6, 7, 8 cycles in a test sequence
+	private static int maxIter = 5;
 	private final static List<IBlock> blocks = new ArrayList<IBlock>();
 	private final static List<DPCStore> functionDPCs = new ArrayList<DPCStore>();
 	private final static List<FunctionVariable> functionBlockLocalVars = new ArrayList<FunctionVariable>();
@@ -1899,8 +1901,10 @@ public class XML_load {
 					connections.add(newCon); // 추출된 연결 정보들은 connections 에 들어간다.
 					prevelem.FormalParam = inVar.getFormalParameter();
 
-					if(prevelem.FormalParam.equals("S") || prevelem.FormalParam.equals("S1") || prevelem.FormalParam.equals("R") || prevelem.FormalParam.equals("R1")|| prevelem.FormalParam.equals("CLK"))
-						setIter = 2;
+					if(prevelem.FormalParam.equals("S") || prevelem.FormalParam.equals("S1") || prevelem.FormalParam.equals("R") || prevelem.FormalParam.equals("R1")|| prevelem.FormalParam.equals("CLK")){
+						defaultIter = 2;
+						setIter = defaultIter;
+					}
 					if (prevelem.type == Element.BLOCK) {
 						console_println(prevelem.LocalID + prevelem.block.getTypeName() + " <-> " + nextelem.LocalID + " "
 								+ nextelem.block.getTypeName());
@@ -3066,7 +3070,7 @@ public class XML_load {
 		} // * while문의 끝: 매 반복시 하나의 testCase 생성
 		
 		//Reset the value of setIter
-		setIter = 1;
+		setIter = defaultIter;
 		//* coverage level update
 		//int satisfiedAsserts = countSatisfiedAsserts(testSuite, dPaths);
 		coverageLevel = (totalAsserts-unsatYicesIDs.size()) / (float) totalAsserts;
