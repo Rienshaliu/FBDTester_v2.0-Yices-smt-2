@@ -644,12 +644,12 @@ public class LogicStatement {
 //						return(XML_load.CVs.get(Long.parseLong(this.variable.substring(2, this.variable.length())))+"_t"+(iter));
 //			}
 			if(this.variable.endsWith("_pre")){
-				if(iter > XML_load.setIter)
-					return "false";
+				// if(iter > XML_load.setIter)
+					// return "false";
 				return this.variable.substring(0, this.variable.length()-4)+"_t"+(iter+1);
 			}
-			if(this.variable.startsWith("pre_") && (iter > XML_load.setIter))
-				return "false";
+			// if(this.variable.startsWith("pre_") && (iter > XML_load.setIter))
+				// return "false";
 			if(this.variable.startsWith("pre_CV"))
 				return(XML_load.pre_CVs.get(Long.parseLong(this.variable.substring(6, this.variable.length())))+"_t"+(iter+1));
 			if(this.variable.startsWith("pre_CLK"))
