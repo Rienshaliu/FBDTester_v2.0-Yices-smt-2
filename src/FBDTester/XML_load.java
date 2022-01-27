@@ -2696,7 +2696,7 @@ public class XML_load {
 //				String solutionStr = "";
 //				for(TestCase tc: testSet)
 //					solutionStr += tc.toString() + "\n";
-				solutionWriter(testSet, pre + "SMT_based_testSuite_" + String.format("%03d", iteration)+".txt");
+				solutionWriter(testSet, pre + "SMT_based_testSuite_" + String.format("%03d", iteration)+/*"-"+randomSeed+*/".txt");
 			} catch (IOException e) {
 				e.printStackTrace();
 				System.err.println("GenerateTestCase(): FATAL ERR");
@@ -3397,6 +3397,7 @@ public class XML_load {
 		}
 		System.err.println("Generating " + fileName + " ... Completed.");
 	}
+	static int randomSeed = 0;
 
 	/**
 	 * executeCommand() 함수를 이용하여 yices 실행
@@ -3408,6 +3409,8 @@ public class XML_load {
 		//		long start = System.currentTimeMillis();
 		ArrayList<String> commandList = new ArrayList<String>();
 		commandList.add(".\\yices\\bin\\yices.exe");
+		// random seed setting
+//		commandList.add("--rand-seed="+randomSeed);
 		commandList.add("output\\"+model+"\\"+fileName);
 
 		String resultStr = executeCommand(commandList, ".");
