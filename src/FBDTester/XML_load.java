@@ -2854,8 +2854,20 @@ public class XML_load {
 													outVarDef += "int "+ls.YicesString(tempSetIter,true)+")\r\n";
 												else
 													outVarDef += "bool "+ls.YicesString(tempSetIter,false)+")\r\n";
-											else
-												outVarDef += "int "+ls.YicesString(tempSetIter,false)+")\r\n";
+											else{
+												// outVarDef += "int "+ls.YicesString(tempSetIter,false)+")\r\n";
+												String str = "";
+												str = ls.YicesString(tempSetIter,false);
+												if(blockName.contains("SEL")) {
+													if(str.contains("true")||str.contains("false"))
+														outVarDef += "bool ";
+													else
+														outVarDef += "int ";
+												}else {
+													outVarDef += "int ";
+												}
+												outVarDef += str + ")\r\n";
+											}
 										}
 									}
 									if(id != "" && ls.blockOrder == i){
@@ -3167,6 +3179,63 @@ public class XML_load {
 			write += "\r\n";
 			// ---------------------------- Writing scan cycle and constants Ends */
 
+			
+			/*feedbackConnection starts--------------------------------------------*/
+			for(int i = 0 ; i<inputs.length; i++)
+				for(int j = 0; j<outputs.length; j++)
+					if ((inputs[i]+"_out").equals(outputs[j])){
+						Long preID=0L,nextID=0L;
+						String preExpr="", nextExpr="";
+						for(Element elem : elements){
+							if(elem.type == Element.OUTVAR && elem.outvar.getExpression().equals(outputs[j])){
+								nextID = elem.LocalID;
+								nextExpr = elem.outvar.getExpression();
+							}
+							if(elem.type == Element.INVAR && elem.invar.getExpression().equals(inputs[i])){
+								preID = elem.LocalID;
+								preExpr = elem.invar.getExpression();
+							}
+						}
+						Connection newCon = new Connection(preID,preExpr,nextID,nextExpr);
+						feedbackConnections.add(newCon);
+					}
+			// --------------------------------------------feedbackConnection ends */
+
+			for (Connection con : connections) {
+				Element conIn = getElementById(con.start);
+				Element conOut = getElementById(con.end);
+				if (conIn.type == Element.INVAR) {
+					//System.out.println("--------- connection ---------");
+					//System.out.println(conIn.invar.getExpression());
+					if (conOut.type == Element.BLOCK)
+						if (conOut.block.getTypeName().equals("R_TRIG"))
+							write += "(define " + conIn.invar.getExpression() + "_t" + (setIter+2) + "::bool false)\r\n";
+							//System.out.println(conOut.block.getTypeName());
+				}
+				else if (conIn.type == Element.BLOCK) {
+					//System.out.println("--------- connection ---------");
+					//System.out.println(conIn.block.getTypeName());
+					if (conOut.type == Element.OUTVAR) {
+						if (conIn.block.getTypeName().equals("TON") || conIn.block.equals("TOF") || conIn.block.equals("TP") || 
+							conIn.block.getTypeName().equals("CTU") || conIn.block.getTypeName().equals("CTD") || conIn.block.getTypeName().equals("CTUD")) {
+							for (IOutVariable outVariable : outputVariables) {
+								if (outVariable.getExpression().contains(conOut.outvar.getExpression())) {
+									for (IConnection icon : outVariable.getConnectionPointIn().getConnections()) {
+										if (icon.getFormalParam().equals("ET") || icon.getFormalParam().equals("CV"))
+											write += "(define " + conOut.outvar.getExpression() + "_t" + (setIter+2) + "::int 0)\r\n";
+									}
+									break;
+								}
+							}
+							//write += "(define " + conOut.outvar.getExpression() + "_t" + (setIter+2) + "::int 0)\r\n";
+						}
+						if (conIn.block.getTypeName().equals("SR") || conIn.block.getTypeName().equals("RS"))
+							write += "(define " + conOut.outvar.getExpression() + "_t" + (setIter+2) + "::bool false)\r\n";
+					}
+				}
+			}
+			write += "\r\n";
+			
 			/* Writing inputs with subranges Starts ----------------------------- */
 			for(int i=0; i<inputs.length; i++) {
 				if(setIter != 0)
@@ -3191,29 +3260,7 @@ public class XML_load {
 					}
 				}
 			}
-
 			// -------------------------------- Writing inputs with subranges Ends */
-
-			/*feedbackConnection starts--------------------------------------------*/
-			for(int i = 0 ; i<inputs.length; i++)
-				for(int j = 0; j<outputs.length; j++)
-					if ((inputs[i]+"_out").equals(outputs[j])){
-						Long preID=0L,nextID=0L;
-						String preExpr="", nextExpr="";
-						for(Element elem : elements){
-							if(elem.type == Element.OUTVAR && elem.outvar.getExpression().equals(outputs[j])){
-								nextID = elem.LocalID;
-								nextExpr = elem.outvar.getExpression();
-							}
-							if(elem.type == Element.INVAR && elem.invar.getExpression().equals(inputs[i])){
-								preID = elem.LocalID;
-								preExpr = elem.invar.getExpression();
-							}
-						}
-						Connection newCon = new Connection(preID,preExpr,nextID,nextExpr);
-						feedbackConnections.add(newCon);
-					}
-			// --------------------------------------------feedbackConnection ends */
 
 			/* Writing block's output variables Starts ---------------------------*/
 
@@ -3234,44 +3281,31 @@ public class XML_load {
 								else
 									outVarDef += "(define " + outvarElem.outvar.getExpression() + "::";
 								if(ls.dpcl.boolOutput){
-									String blockName =getElementById(con.start).block.getTypeName();
-									
-									if(blockName.equals("TON") || blockName.equals("TOF") || blockName.equals("TP")|| blockName.equals("CTU")||blockName.equals("CTD")||blockName.equals("CTUD"))
-										outVarDef += "bool false)\r\n";
+									if(setIter != 0)
+										outVarDef += "bool "+ls.YicesString(setIter+1,false)+")\r\n";
 									else
-										if(setIter != 0)
-											outVarDef += "bool "+ls.YicesString(setIter+1,false)+")\r\n";
-										else
-											outVarDef += "bool "+ls.YicesString()+")\r\n";
+										outVarDef += "bool "+ls.YicesString()+")\r\n";
 								}else{
-									String blockName =getElementById(con.start).block.getTypeName();
-									if(blockName.equals("TON") || blockName.equals("TOF") || blockName.equals("TP")|| blockName.equals("CTU")||blockName.equals("CTD")||blockName.equals("CTUD")){
-										if(con.startParam.equals("ET") || con.startParam.equals("CV"))
-											outVarDef += "int 0)\r\n";
+									/*
+									if(setIter != 0)
+										outVarDef += "int "+ls.YicesString(setIter+1,false)+")\r\n";
+									else
+										outVarDef += "int "+ ls.YicesString()+")\r\n";
+									*/
+									String str = "";
+									if(setIter != 0)
+										str = ls.YicesString(setIter+1,false);
+									else
+										str = ls.YicesString();
+									if(lastBlockElem.block.getTypeName().contains("SEL")) {
+										if(str.contains("true")||str.contains("false"))
+											outVarDef += "bool ";
 										else
-											if(setIter != 0) {
-												String temp = ls.YicesString(setIter+1,false);
-												String t = "TON_et_t"+(setIter+2);
-												StringTokenizer st = new StringTokenizer(temp," ");
-												String replacedString = "";
-												while (!st.hasMoreTokens()) {
-													String tempString = st.nextToken();
-													if (tempString.contains(t)) {
-														replacedString += " 0";
-													} else {
-														replacedString += (" " + tempString);
-													}
-												}
-												
-												outVarDef += "bool "+ replacedString+")\r\n";
-											}
-											else
-												outVarDef += "bool "+ ls.YicesString()+")\r\n";
-									}else
-										if(setIter != 0)
-											outVarDef += "int "+ls.YicesString(setIter+1,false)+")\r\n";
-										else
-											outVarDef += "bool "+ ls.YicesString()+")\r\n";
+											outVarDef += "int ";
+									}else {
+										outVarDef += "int ";
+									}
+									outVarDef += str + ")\r\n";
 								}
 							}else{
 								if(setIter != 0)
@@ -3279,42 +3313,31 @@ public class XML_load {
 								else
 									outVarDef += "(define "+ ls.dpcl.functionName + ls.blockId + "_" + ls.dpcl.outVar.toLowerCase() + "::";
 								if(ls.dpcl.boolOutput){
-									String blockName =getElementById(con.start).block.getTypeName();
-									if(blockName.equals("TON") || blockName.equals("TOF") || blockName.equals("TP")|| blockName.equals("CTU")||blockName.equals("CTD")||blockName.equals("CTUD"))
-										outVarDef += "bool false)\r\n";
+									if(setIter != 0)
+										outVarDef += "bool "+ls.YicesString(setIter+1,false)+")\r\n";
 									else
-										if(setIter != 0)
-											outVarDef += "bool "+ls.YicesString(setIter+1,false)+")\r\n";
-										else
-											outVarDef += "bool "+ls.YicesString()+")\r\n";
+										outVarDef += "bool "+ls.YicesString()+")\r\n";
 								}else{
-									String blockName =getElementById(con.start).block.getTypeName();
-									if(blockName.equals("TON") || blockName.equals("TOF") || blockName.equals("TP")|| blockName.equals("CTU")||blockName.equals("CTD")||blockName.equals("CTUD")){
-										if(con.startParam.equals("ET") || con.startParam.equals("CV"))
-											outVarDef += "int 0)\r\n";
+									/*
+									if(setIter != 0)
+										outVarDef += "int "+ls.YicesString(setIter+1,false)+")\r\n";
+									else
+										outVarDef += "int "+ls.YicesString()+")\r\n";
+									*/
+									String str = "";
+									if(setIter != 0)
+										str = ls.YicesString(setIter+1,false);
+									else
+										str = ls.YicesString();
+									if(ls.dpcl.functionName.contains("SEL")) {
+										if(str.contains("true")||str.contains("false"))
+											outVarDef += "bool ";
 										else
-											if(setIter != 0) {
-												String temp = ls.YicesString(setIter+1,false);
-												String t = "TON_et_t"+(setIter+2);
-												StringTokenizer st = new StringTokenizer(temp," ");
-												String replacedString = "";
-												while (!st.hasMoreTokens()) {
-													String tempString = st.nextToken();
-													if (tempString.contains(t)) {
-														replacedString += " 0";
-													} else {
-														replacedString += (" " + tempString);
-													}
-												}
-												outVarDef += "bool "+ replacedString+")\r\n";
-											}
-											else
-												outVarDef += "bool "+ ls.YicesString()+")\r\n";
-									}else
-										if(setIter != 0)
-											outVarDef += "int "+ls.YicesString(setIter+1,false)+")\r\n";
-										else
-											outVarDef += "int "+ls.YicesString()+")\r\n";
+											outVarDef += "int ";
+									}else {
+										outVarDef += "int ";
+									}
+									outVarDef += str + ")\r\n";
 								}
 							}
 						}
