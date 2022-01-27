@@ -201,7 +201,7 @@ public class CreateGUI extends Frame implements ActionListener {
 		leftPanel.add(logButton);
 		leftPanel.add(new JLabel("FC Library : "));
 		libraryPath = new JTextField(7);
-		libraryPath.setText("lib\\FC library_updated_20180103.txt");
+		libraryPath.setText("lib\\FC library_updated_20200831.txt");
 		leftPanel.add(libraryPath);
 		libraryButton = new JButton("Open...");
 		libraryButton.addActionListener(this);
@@ -211,7 +211,7 @@ public class CreateGUI extends Frame implements ActionListener {
 
 		leftPanel.add(new JLabel("Calc Library : "));
 		libraryCalcPath = new JTextField(6);
-		libraryCalcPath.setText("lib\\Calc library_updated_20120105.txt");
+		libraryCalcPath.setText("lib\\Calc library_updated_20200831.txt");
 		leftPanel.add(libraryCalcPath);
 		libraryCalcButton = new JButton("Open...");
 		libraryCalcButton.addActionListener(this);
