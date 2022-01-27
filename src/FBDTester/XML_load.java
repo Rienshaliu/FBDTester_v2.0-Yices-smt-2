@@ -723,7 +723,7 @@ public class XML_load {
 	static String prevDpathOutvar = "";
 	static String testPath = "";
 	static boolean rewriteDpcNoRecurse = false;
-	static int[][] numOfEachTC = new int[100000][10];
+	static int[][] numOfEachTC = new int[100000][1000];
 
 	static String acceptNonComment(BufferedReader in) {
 		String s = "";
@@ -1159,12 +1159,14 @@ public class XML_load {
 
 		for (DPath path : DPaths) {
 			boolean isSequenceInput =true;
+			/*
 			for(int i = 0 ; i<inputs.length; i++){
 				if(path.startElem.invar.getExpression().equals(inouts[i])){
 					isSequenceInput=false;
 					break;
 				}
 			}
+			*/
 			if (isSequenceInput && path.startElem.value != null && path.startElem.valueType == Element.BOOLEAN){
 				DPath newTruePath = new DPath();
 				DPath newFalsePath = new DPath();
@@ -1617,7 +1619,7 @@ public class XML_load {
 			}
 		}
 		if (DPathCounter == 0
-				|| (!CreateGUI.BCTestCheck.isSelected() && !CreateGUI.ICCTestCheck.isSelected() && !CreateGUI.CCCTestCheck.isSelected())) {
+				/*|| (!CreateGUI.BCTestCheck.isSelected() && !CreateGUI.ICCTestCheck.isSelected() && !CreateGUI.CCCTestCheck.isSelected())*/) {
 			System.err.println("[Error]D-Path doesn't created or none of tests are selected.");
 		}
 	}
@@ -3049,7 +3051,7 @@ public class XML_load {
 		//Reset the value of setIter
 		setIter = 1;
 		//* coverage level update
-		int satisfiedAsserts = countSatisfiedAsserts(testSuite, dPaths);
+		//int satisfiedAsserts = countSatisfiedAsserts(testSuite, dPaths);
 		coverageLevel = (totalAsserts-unsatYicesIDs.size()) / (float) totalAsserts;
 		// * yices_log.txt 파일 출력		
 		String iterationName = String.format("%03d", iteration) + "-" + partNo + ".txt";
@@ -3477,7 +3479,7 @@ public class XML_load {
 			/*constant writing start----------------------------------------------------------------------*/
 			BufferedWriter solution = new BufferedWriter(new FileWriter("output\\"+model+"\\"+fileName));
 			solution.write("### constants\r\n");
-			if(!constants[0].equals(""))
+			//if(!constants[0].equals(""))
 				for (int i = 0 ; i< constants.length; i++)
 					solution.write(constants[i]+"\t"+cTypes[i]+"\r\n");
 			solution.write("\r\n");
