@@ -2667,7 +2667,6 @@ public class XML_load {
 		String solutionLog = "Part\tNo.\tCov.\n";
 		for (int i = 0; i < maxrun; i++) {
 			try {
-				//				Collections.shuffle(dPath);
 				iteration = i+1;
 				testSet = new ArrayList<TestCase>();
 				boolean isFirstYicesHeader = true;
@@ -2939,6 +2938,10 @@ public class XML_load {
 				
 				if(isFirstYices) {
 					// * First run
+					// shuffle
+					List<DPath> shuffledPaths = new ArrayList<DPath>(dPaths);
+					Collections.shuffle(shuffledPaths);
+					
 					isFirstYices = false;	
 					for (DPath path : dPaths/*.subList(size*(partNo-1), size*partNo)*/){
 						assertions.add(path); assertID++;
