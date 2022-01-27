@@ -865,6 +865,17 @@ public class XML_load {
 						rewriteDpcNoRecurse = true;
 						rewriteDPCWithCalculation(functionCalc, con.end);
 						rewriteDpcNoRecurse = false;
+						
+						// detect the negated output edge of block
+						for (IBlock block : blocks) {
+							for (IOutVariableInBlock OutVar : block.getOutVariables()) {
+								if (block.getLocalID() == con.end) {
+									if (OutVar.isNegated()) {
+										functionCalc = new LogicStatement(LogicStatement.NOT, functionCalc);
+									}
+								}
+							}
+						}
 
 						functionCalc.dpcl = functionDPC;
 						functionCalc.blockId = con.end;
