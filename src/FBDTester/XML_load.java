@@ -1951,7 +1951,6 @@ public class XML_load {
 		}
 		for (IOutVariable outVariable : outputVariables) {
 			// [Block] <====> [Outvar] 연결을 추출한다.
-			// [Invar] <====> [Outvar] 라는 connection은 무시.
 			Element nextelem = getElementById(outVariable.getLocalID());
 			for (IConnection conn : outVariable.getConnectionPointIn().getConnections()) {
 
@@ -1972,6 +1971,20 @@ public class XML_load {
 					console_println(conn.getFormalParam() + " / " + outVariable.getExpression());
 
 					console_println(prevelem.LocalID + " " + prevelem.block.getTypeName() + " <-> " + nextelem.LocalID + " "
+							+ nextelem.outvar.getExpression());
+					prevelem.nextElement = nextelem;
+					nextelem.prevElement = prevelem;
+				}
+				// [Invar] <====> [Outvar] connection
+				IInVariable prev = prevelem.invar;
+				if(prev != null) {
+					Connection newCon = new Connection(prevelem.LocalID, prev.getExpression(), nextelem.LocalID, outVariable.getExpression());
+
+					connections.add(newCon);
+					console_println("Input Variable "+" : ");
+					console_println(prev.getExpression() + " / " + outVariable.getExpression());
+
+					console_println(prevelem.LocalID + " " + prev.getExpression() + " <-> " + nextelem.LocalID + " "
 							+ nextelem.outvar.getExpression());
 					prevelem.nextElement = nextelem;
 					nextelem.prevElement = prevelem;
@@ -2890,7 +2903,44 @@ public class XML_load {
 								}
 							}
 						// -------------------------------------------------------- Writing function calculation definitions ends */
-
+						
+						// [Invar] <====> [Outvar] connection
+						List<String> invarList = new ArrayList<String>();
+						
+						for (IInVariable inVar : inputVariables) {
+							invarList.add(inVar.getExpression());
+						}
+						
+						String write = "";
+						
+						for (Connection c: connections) {
+							if(invarList.contains(c.startParam)&&Arrays.asList(outputs).contains(c.endParam)) {
+								write += "(define ";
+								if (tempSetIter!=0)
+									write += c.endParam + "_t" + tempSetIter + "::";
+								else 
+									write += c.endParam + "::";
+								String datatype = "int";
+								if (c.startParam.contains("TRUE")||c.startParam.contains("FALSE"))datatype = "bool";
+								write += datatype.toLowerCase() + " ";
+								if (!Arrays.asList(inputs).contains(c.startParam)) 
+									write += c.startParam.toLowerCase() + ")\r\n";
+								else {
+									if (tempSetIter!=0) {
+										if (c.startParam.equals("TSP")||c.startParam.equals("PTSP"))
+											write += c.startParam + "_out" + "_t" + tempSetIter + ")\r\n";
+										else
+											write += c.startParam +"_t" + tempSetIter + ")\r\n";
+									}
+									else {
+										if (c.startParam.equals("TSP")||c.startParam.equals("PTSP"))
+											write += c.startParam + "_out" + ")\r\n";
+										else
+											write += c.startParam + ")\r\n";
+									}
+								}
+							}
+						}
 						yicesWriter.write(write);
 						yicesHeaderList.add(write);
 						yicesWriter.write("\r\n");
@@ -3367,6 +3417,32 @@ public class XML_load {
 						}
 					}
 				}
+			
+			// [Invar] <====> [Outvar] connection
+			List<String> invarList = new ArrayList<String>();
+			
+			for (IInVariable inVar : inputVariables) {
+				invarList.add(inVar.getExpression());
+			}
+			
+			for (Connection c: connections) {
+				if(invarList.contains(c.startParam)&&Arrays.asList(outputs).contains(c.endParam)) {
+					write += "(define ";
+					write += c.endParam + "_t" + (setIter+1) + "::";
+					String datatype = "int";
+					if (c.startParam.contains("TRUE")||c.startParam.contains("FALSE")) datatype = "bool";
+					if (!Arrays.asList(inputs).contains(c.startParam)) 
+						write += datatype.toLowerCase() + " " + c.startParam.toLowerCase() + ")\r\n";
+					else {
+						if (c.startParam.equals("TSP") || c.startParam.equals("PTSP")) {
+							write += datatype.toLowerCase() + " " + c.startParam + "_out" + "_t" + (setIter+1) +")\r\n";
+						}
+						else {
+							write += datatype.toLowerCase() + " " + c.startParam + "_t" + (setIter+1) +")\r\n";
+						}
+					}
+				}
+			}
 			
 			// yicesWriter.write(";; Rule 1-2. Define DPCs for d-paths\r\n\r\n");
 			//			System.out.println("Rule 1-2");
