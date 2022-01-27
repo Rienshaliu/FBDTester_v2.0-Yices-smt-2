@@ -1857,6 +1857,12 @@ public class XML_load {
 						String prevOut = outVar.getExpression();
 						outVar.setExpression(prevOut+"_out");
 					}
+				// repeated output writing
+				if(el.type == Element.OUTVAR)
+					if(el.outvar.getExpression().equals(outVar.getExpression())){
+						String prevOut = outVar.getExpression();
+						outVar.setExpression(prevOut+"_out");
+					}
 			}
 
 			elem.outvar = outVar;
