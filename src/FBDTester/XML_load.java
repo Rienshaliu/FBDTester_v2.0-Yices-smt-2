@@ -2681,7 +2681,7 @@ public class XML_load {
 						// 중복 제거 (같은 testCase가 이미 testSet에 있으면 추가하지 않는다.)
 						boolean isExist = false;
 						for(TestCase tc: testSet.subList(0, testSetSize)) {
-							if(newTC.originalTC.equals(tc.originalTC)) {
+							if(newTC.toString().equals(tc.toString())) {
 								isExist = true;
 								break;
 							}
