@@ -588,7 +588,7 @@ public class LogicStatement {
 				op = "<";
 				break;
 			case LogicStatement.NOTEQUAL:
-				op = "!=";
+				op = "/=";
 				break;
 			case LogicStatement.EQUAL:
 				op = "=";
@@ -723,13 +723,13 @@ public class LogicStatement {
 				op = "<";
 				break;
 			case LogicStatement.NOTEQUAL:
-				op = "!=";
+				op = "/=";
 				break;
 			case LogicStatement.EQUAL:
 				op = "=";
 				break;
 			case LogicStatement.MOD:
-				op = "%";
+				op = "mod";
 				break;
 			case LogicStatement.MINUS:
 				op = "-";
